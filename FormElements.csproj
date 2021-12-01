@@ -90,6 +90,7 @@
     <Content Include="images\gifB.gif" />
     <Content Include="images\gifC.gif" />
     <Content Include="images\star_sky.jpg" />
+    <Content Include="images\wide-vladimir-putin.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

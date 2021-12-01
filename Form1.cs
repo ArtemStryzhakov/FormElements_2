@@ -27,13 +27,16 @@ namespace FormElements
         CheckBox ch3;
         CheckBox ch4;
         TextBox txtB;
+        TabControl tabC;
+        TabPage tb;
+        ListBox listBox1;
         bool t = true;
         bool f = true;
         bool r = true;
 
         public Form1()
         {
-            this.Height = 500;
+            this.Height = 600;
             this.Width = 800;
 
             this.Text = "Vorm elementidega";
@@ -49,6 +52,7 @@ namespace FormElements
             tn.Nodes.Add(new TreeNode("PictureBox"));
             tn.Nodes.Add(new TreeNode("TabControll"));
             tn.Nodes.Add(new TreeNode("MessageBox"));
+            tn.Nodes.Add(new TreeNode("ListBox"));
 
             //nupp
             btn = new Button();
@@ -83,15 +87,7 @@ namespace FormElements
             mes.Width = 100;
             mes.Click += Mes_Click;
 
-            //radioButton
-            radA = new RadioButton();
-            radB = new RadioButton();
-            radA.Location = new Point(600, 50);
-            radB.Location = new Point(600, 70);
-            radA.Text = "C#";
-            radB.Text = "Python";
-            radA.Click += RadA_Click;
-            radB.Click += RadB_Click;
+            
 
             //checkbox
             ch1 = new CheckBox();
@@ -231,7 +227,7 @@ namespace FormElements
         {
             if (e.Node.Text == "Nupp")
             {
-                this.Controls.Add(btn); 
+                this.Controls.Add(btn);
             }
             else if (e.Node.Text == "Label")
             {
@@ -243,6 +239,8 @@ namespace FormElements
             }
             else if (e.Node.Text == "MessageBox")
             {
+                //radioButton
+
                 var answer = MessageBox.Show(
                "Выберите один из вариантов",
                "Сообщение",
@@ -261,15 +259,29 @@ namespace FormElements
                         var texxt = MessageBox.Show("Don't click on NO button, or you will be dissapointed.", "Message", MessageBoxButtons.YesNo);
                         if (texxt == DialogResult.No)
                         {
-                            Process.Start("shutdown","/r /t 3"); // the argument /r is to restart the computer
+                            Process.Start("shutdown", "/r /t 3"); // the argument /r is to restart the computer
                         }
                     }
                 }
             }
             else if (e.Node.Text == "Radiobutton")
             {
+                radA = new RadioButton();
+                radA.Text = "C#";
+                radA.Location = new Point(600, 50);
+                radB = new RadioButton();
+                radB.Text = "Python";
+                radB.Location = new Point(600, 70);
                 this.Controls.Add(radA);
                 this.Controls.Add(radB);
+                if (radA.Checked)
+                {
+                    radA.CheckedChanged += new EventHandler(RadA_Click);
+                }
+                else
+                {
+                    radB.CheckedChanged += new EventHandler(RadB_Click);
+                }
             }
             else if (e.Node.Text == "CheckBox")
             {
@@ -281,6 +293,65 @@ namespace FormElements
             else if (e.Node.Text == "TextBox")
             {
                 this.Controls.Add(txtB);
+            }
+            else if (e.Node.Text == "TabControll")
+            {
+                // TabControll
+
+                tabC = new TabControl();
+                tabC.Location = new Point(450, 50);
+                tabC.Size = new Size(400, 400);
+
+                TabPage tabP1 = new TabPage("Esimene");
+                WebBrowser wb = new WebBrowser();
+                wb.Url = new Uri("https://www.github.com/");
+                tabP1.Controls.Add(wb);
+                //------------------------------------------
+                TabPage tabP2 = new TabPage("Teine");
+                WebBrowser wb1 = new WebBrowser();
+                wb1.Url = new Uri("https://c.tenor.com/KjUtiyx4GhwAAAAC/wide-vladimir-putin.gif");
+                tabP2.Controls.Add(wb1);
+                TabPage tabP3 = new TabPage("Kolmas");
+                tabP3.DoubleClick += TabP3_DoubleClick;
+                tabC.Controls.Add(tabP1);
+                tabC.Controls.Add(tabP2);
+                tabC.Controls.Add(tabP3);
+                this.Controls.Add(tabC);
+                tabC.DoubleClick += TabC_DoubleClick;
+            }
+            else if (e.Node.Text == "ListBox")
+            {
+                // Добавляем на панель список
+                listBox1 = new ListBox();
+                listBox1.Items.Add("Зеленый");
+                listBox1.Items.Add("Желтый");
+                listBox1.Items.Add("Голубой");
+                listBox1.Items.Add("Серый");
+                listBox1.Location = new Point(200, 300);
+                listBox1.Size = new Size(100, 60);
+                listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
+                this.Controls.Add(listBox1);
+            }
+        }
+        private void TabC_DoubleClick(object sender, EventArgs e)
+        {
+            this.tabC.TabPages.Remove(tabC.SelectedTab);
+        }
+
+        private void TabP3_DoubleClick(object sender, EventArgs e)
+        {
+            string title = "tabP" + (tabC.TabCount + 1).ToString();
+            tb = new TabPage(title);
+            tabC.TabPages.Add(tb);
+        }
+        void listBox1_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            switch (listBox1.SelectedItem.ToString())
+            {
+                case ("Зеленый"): tree.BackColor = Color.Green; break;
+                case ("Желтый"): tree.BackColor = Color.Yellow; break;
+                case ("Голубой"): tree.BackColor = Color.Blue; break;
+                case ("Серый"): tree.BackColor = Color.Gray; break;
             }
         }
     }
