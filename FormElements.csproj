@@ -91,6 +91,7 @@
     <Content Include="images\gifC.gif" />
     <Content Include="images\star_sky.jpg" />
     <Content Include="images\wide-vladimir-putin.gif" />
+    <Content Include="images\menu.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -30,9 +30,11 @@ namespace FormElements
         TabControl tabC;
         TabPage tb;
         ListBox listBox1;
+        MainMenu menu;
         bool t = true;
         bool f = true;
         bool r = true;
+        private System.Timers.Timer aTimer;
 
         public Form1()
         {
@@ -53,6 +55,8 @@ namespace FormElements
             tn.Nodes.Add(new TreeNode("TabControll"));
             tn.Nodes.Add(new TreeNode("MessageBox"));
             tn.Nodes.Add(new TreeNode("ListBox"));
+            tn.Nodes.Add(new TreeNode("DataGridView"));
+            tn.Nodes.Add(new TreeNode("MainMenu"));
 
             //nupp
             btn = new Button();
@@ -327,12 +331,55 @@ namespace FormElements
                 listBox1.Items.Add("Желтый");
                 listBox1.Items.Add("Голубой");
                 listBox1.Items.Add("Серый");
-                listBox1.Location = new Point(200, 300);
-                listBox1.Size = new Size(100, 60);
+                listBox1.Location = new Point(150, 300);
+                listBox1.Size = new Size(60, 60);
                 listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
                 this.Controls.Add(listBox1);
             }
+            else if (e.Node.Text == "DataGridView")
+            {
+                // Добавляем на панель таблицу, заполненную данными из файла xml
+                DataSet dataSet1 = new DataSet("Пример DataSet");
+                dataSet1.ReadXml(@"..\..\images\menu.xml");
+                DataGridView dataGridView1 = new DataGridView();
+                dataGridView1.Width = 443;
+                dataGridView1.Height = 100;
+                dataGridView1.Location = new Point(150, 400);
+                dataGridView1.AutoGenerateColumns = true;
+                dataGridView1.DataSource = dataSet1;
+                dataGridView1.DataMember = "note";
+                //dataGridView1.DataMember = “оценка”;
+                //dataGridView1.ColumnCount = 2;
+                this.Controls.Add(dataGridView1);
+            }
+            else if (e.Node.Text == "MainMenu")
+            {
+                menu = new MainMenu();
+                MenuItem menuFile = new MenuItem("File");
+                menuFile.MenuItems.Add("Exit", new EventHandler(menuFile_Exit_Select));
+                menuFile.MenuItems.Add("Browser", new EventHandler(open_webbrowser_Select));
+                menuFile.MenuItems.Add("Open", new EventHandler(open_second_form));
+
+                menu.MenuItems.Add(menuFile);
+                this.Menu = menu;
+            }
         }
+
+        private void open_second_form(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void open_webbrowser_Select(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://stackoverflow.com/questions/4580263/how-to-open-in-default-browser-in-c-sharp");
+        }
+
+        private void menuFile_Exit_Select(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void TabC_DoubleClick(object sender, EventArgs e)
         {
             this.tabC.TabPages.Remove(tabC.SelectedTab);
